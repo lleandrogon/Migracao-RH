@@ -1,10 +1,13 @@
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
+from airflow.models.baseoperator import cross_downstream
+from airflow.models.baseoperator import chain
 
 from datetime import datetime
 import pendulum
 
 from operators.migracaoExtract import *
+from operators.migracaoTransform import *
 
 dag = DAG(
     dag_id = "postgreSQL_to_MySQL",
@@ -42,4 +45,31 @@ e_salarios = PythonOperator(
     dag = dag
 )
 
-[e_cargos, e_departamentos, e_funcionarios, e_salarios]
+t_cargos = PythonOperator(
+    task_id = "transform_cargos",
+    python_callable = transform_cargos,
+    dag = dag
+)
+
+t_departamentos = PythonOperator(
+    task_id = "transform_departamentos",
+    python_callable = transform_departamentos,
+    dag = dag
+)
+
+t_funcionarios = PythonOperator(
+    task_id = "transform_funcionarios",
+    python_callable = transform_funcionarios,
+    dag = dag
+)
+
+t_salarios = PythonOperator(
+    task_id = "transform_salarios",
+    python_callable = transform_salarios,
+    dag = dag
+)
+
+cross_downstream(
+    [e_cargos, e_departamentos, e_funcionarios, e_salarios],
+    [t_cargos, t_departamentos, t_funcionarios, t_salarios]
+)
