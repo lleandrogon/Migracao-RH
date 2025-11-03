@@ -1,13 +1,14 @@
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from airflow.models.baseoperator import cross_downstream
-from airflow.models.baseoperator import chain
 
 from datetime import datetime
 import pendulum
 
 from operators.migracaoExtract import *
 from operators.migracaoTransform import *
+from operators.migracaoCreateTables import query
 
 dag = DAG(
     dag_id = "postgreSQL_to_MySQL",
@@ -21,15 +22,15 @@ dag = DAG(
     tags = ["pgsql", "mysql"]
 )
 
-e_cargos = PythonOperator(
-    task_id = "extract_cargos",
-    python_callable = extract_cargos,
-    dag = dag
-)
-
 e_departamentos = PythonOperator(
     task_id = "extract_departamentos",
     python_callable = extract_departamentos,
+    dag = dag
+)
+
+e_cargos = PythonOperator(
+    task_id = "extract_cargos",
+    python_callable = extract_cargos,
     dag = dag
 )
 
@@ -45,15 +46,15 @@ e_salarios = PythonOperator(
     dag = dag
 )
 
-t_cargos = PythonOperator(
-    task_id = "transform_cargos",
-    python_callable = transform_cargos,
-    dag = dag
-)
-
 t_departamentos = PythonOperator(
     task_id = "transform_departamentos",
     python_callable = transform_departamentos,
+    dag = dag
+)
+
+t_cargos = PythonOperator(
+    task_id = "transform_cargos",
+    python_callable = transform_cargos,
     dag = dag
 )
 
@@ -69,7 +70,19 @@ t_salarios = PythonOperator(
     dag = dag
 )
 
+create_tables = SQLExecuteQueryOperator(
+    task_id = "create_tables",
+    conn_id = "load_mysql",
+    sql = query,
+    dag = dag
+)
+
 cross_downstream(
     [e_cargos, e_departamentos, e_funcionarios, e_salarios],
     [t_cargos, t_departamentos, t_funcionarios, t_salarios]
+)
+
+cross_downstream(
+    [t_cargos, t_departamentos, t_funcionarios, t_salarios],
+    [create_tables]   
 )

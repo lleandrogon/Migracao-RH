@@ -1,0 +1,13 @@
+{"timestamp":"2025-11-03T01:07:15.999820Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2025-11-03T01:07:16.001795Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/migracao_rh.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2025-11-03T01:07:16.070191Z","level":"warning","event":"The `airflow.models.baseoperator.cross_downstream` attribute is deprecated. Please use `'airflow.sdk.bases.operator.cross_downstream'`.","category":"DeprecatedImportWarning","filename":"/opt/airflow/dags/migracao_rh.py","lineno":4,"logger":"py.warnings"}
+{"timestamp":"2025-11-03T01:07:16.110354Z","level":"info","event":"Task instance is in running state","logger":"task.stdout"}
+{"timestamp":"2025-11-03T01:07:16.110872Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","logger":"task.stdout"}
+{"timestamp":"2025-11-03T01:07:16.111156Z","level":"info","event":"Current task name:create_table_departamentos","logger":"task.stdout"}
+{"timestamp":"2025-11-03T01:07:16.111305Z","level":"info","event":"Dag name:postgreSQL_to_MySQL","logger":"task.stdout"}
+{"timestamp":"2025-11-03T01:07:16.111736Z","level":"info","event":"Executing: \n    CREATE TABLE IF NOT EXISTS departamentos(\n        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n        nome VARCHAR(100),\n        cidade VARCHAR(100),\n        uf VARCHAR(2)\n    );","logger":"airflow.task.operators.airflow.providers.common.sql.operators.sql.SQLExecuteQueryOperator","filename":"sql.py","lineno":309}
+{"timestamp":"2025-11-03T01:07:16.181891Z","level":"info","event":"Running statement: \n    CREATE TABLE IF NOT EXISTS departamentos(\n        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n        nome VARCHAR(100),\n        cidade VARCHAR(100),\n        uf VARCHAR(2)\n    );, parameters: None","logger":"airflow.task.hooks.airflow.providers.mysql.hooks.mysql.MySqlHook","filename":"sql.py","lineno":810}
+{"timestamp":"2025-11-03T01:07:16.211764Z","level":"info","event":"Rows affected: 0","logger":"airflow.task.hooks.airflow.providers.mysql.hooks.mysql.MySqlHook","filename":"sql.py","lineno":822}
+{"timestamp":"2025-11-03T01:07:16.258452Z","level":"info","event":"Task instance in success state","logger":"task.stdout"}
+{"timestamp":"2025-11-03T01:07:16.258641Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","logger":"task.stdout"}
+{"timestamp":"2025-11-03T01:07:16.258786Z","level":"info","event":"Task operator:<Task(SQLExecuteQueryOperator): create_table_departamentos>","logger":"task.stdout"}
