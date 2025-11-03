@@ -1,14 +1,5 @@
 import pandas
 
-def transform_cargos(**kwargs):
-    cargos = kwargs["ti"].xcom_pull(task_ids = "extract_cargos")
-    df = pandas.read_json(cargos, orient = "records")
-
-    df["salario_base"] = pandas.to_numeric(df["salario_base"], errors = "coerce")
-    df["salario_base"] = df["salario_base"] + 500
-
-    return df
-
 def transform_departamentos(**kwargs):
     departamentos = kwargs["ti"].xcom_pull(task_ids = "extract_departamentos")
     df = pandas.read_json(departamentos, orient = "records")
@@ -84,6 +75,15 @@ def transform_departamentos(**kwargs):
     }
 
     df["uf"] = df["cidade"].str.lower().map(map_uf)
+
+    return df
+
+def transform_cargos(**kwargs):
+    cargos = kwargs["ti"].xcom_pull(task_ids = "extract_cargos")
+    df = pandas.read_json(cargos, orient = "records")
+
+    df["salario_base"] = pandas.to_numeric(df["salario_base"], errors = "coerce")
+    df["salario_base"] = df["salario_base"] + 500
 
     return df
 
