@@ -1,0 +1,12 @@
+{"timestamp":"2025-11-03T20:42:40.594863Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2025-11-03T20:42:40.595434Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/migracao_rh.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2025-11-03T20:42:40.626009Z","level":"warning","event":"The `airflow.models.baseoperator.cross_downstream` attribute is deprecated. Please use `'airflow.sdk.bases.operator.cross_downstream'`.","category":"DeprecatedImportWarning","filename":"/opt/airflow/dags/migracao_rh.py","lineno":4,"logger":"py.warnings"}
+{"timestamp":"2025-11-03T20:42:40.667071Z","level":"info","event":"Task instance is in running state","logger":"task.stdout"}
+{"timestamp":"2025-11-03T20:42:40.667287Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","logger":"task.stdout"}
+{"timestamp":"2025-11-03T20:42:40.667386Z","level":"info","event":"Current task name:load_cargos","logger":"task.stdout"}
+{"timestamp":"2025-11-03T20:42:40.667422Z","level":"info","event":"Dag name:postgreSQL_to_MySQL","logger":"task.stdout"}
+{"timestamp":"2025-11-03T20:42:40.807791Z","level":"info","event":"Done loading. Loaded a total of 5 rows into cargos","logger":"airflow.task.hooks.airflow.providers.mysql.hooks.mysql.MySqlHook","filename":"sql.py","lineno":963}
+{"timestamp":"2025-11-03T20:42:40.808970Z","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator","filename":"python.py","lineno":218}
+{"timestamp":"2025-11-03T20:42:40.867546Z","level":"info","event":"Task instance in success state","logger":"task.stdout"}
+{"timestamp":"2025-11-03T20:42:40.867704Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","logger":"task.stdout"}
+{"timestamp":"2025-11-03T20:42:40.867805Z","level":"info","event":"Task operator:<Task(PythonOperator): load_cargos>","logger":"task.stdout"}

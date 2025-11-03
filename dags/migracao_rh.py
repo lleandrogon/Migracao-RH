@@ -9,6 +9,7 @@ import pendulum
 from operators.migracaoExtract import *
 from operators.migracaoTransform import *
 from operators.migracaoCreateTables import query
+from operators.migracaoLoad import *
 
 dag = DAG(
     dag_id = "postgreSQL_to_MySQL",
@@ -77,12 +78,41 @@ create_tables = SQLExecuteQueryOperator(
     dag = dag
 )
 
-cross_downstream(
-    [e_cargos, e_departamentos, e_funcionarios, e_salarios],
-    [t_cargos, t_departamentos, t_funcionarios, t_salarios]
+l_departamentos = PythonOperator(
+    task_id = "load_departamentos",
+    python_callable = load_departamentos,
+    dag = dag
+)
+
+l_cargos = PythonOperator(
+    task_id = "load_cargos",
+    python_callable = load_cargos,
+    dag = dag
+)
+
+l_funcionarios = PythonOperator(
+    task_id = "load_funcionarios",
+    python_callable = load_funcionarios,
+    dag = dag
+)
+
+l_salarios = PythonOperator(
+    task_id = "load_salarios",
+    python_callable = load_salarios,
+    dag = dag
 )
 
 cross_downstream(
-    [t_cargos, t_departamentos, t_funcionarios, t_salarios],
+    [e_departamentos, e_cargos, e_funcionarios, e_salarios],
+    [t_departamentos, t_cargos, t_funcionarios, t_salarios]
+)
+
+cross_downstream(
+    [t_departamentos, t_cargos, t_funcionarios, t_salarios],
     [create_tables]   
+)
+
+cross_downstream(
+    [create_tables],
+    [l_departamentos, l_cargos, l_funcionarios, l_salarios]
 )
