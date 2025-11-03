@@ -3,6 +3,7 @@ import pandas
 def transform_departamentos(**kwargs):
     departamentos = kwargs["ti"].xcom_pull(task_ids = "extract_departamentos")
     df = pandas.read_json(departamentos, orient = "records")
+    df = df.where(pandas.notnull(df), None)
 
     df = df.rename(columns = {"localizacao": "cidade"})
 
@@ -81,6 +82,7 @@ def transform_departamentos(**kwargs):
 def transform_cargos(**kwargs):
     cargos = kwargs["ti"].xcom_pull(task_ids = "extract_cargos")
     df = pandas.read_json(cargos, orient = "records")
+    df = df.where(pandas.notnull(df), None)
 
     df["salario_base"] = pandas.to_numeric(df["salario_base"], errors = "coerce")
     df["salario_base"] = df["salario_base"] + 500
@@ -90,6 +92,7 @@ def transform_cargos(**kwargs):
 def transform_funcionarios(**kwargs):
     funcionarios = kwargs["ti"].xcom_pull(task_ids = "extract_funcionarios")
     df = pandas.read_json(funcionarios, orient = "records")
+    df = df.where(pandas.notnull(df), None)
 
     df["email"] = [
         "anasouzateste@email.com",
@@ -99,13 +102,18 @@ def transform_funcionarios(**kwargs):
         "eduardolimateste@email.com"
     ]
 
+    df = df[["id", "nome", "email", "cpf", "data_admissao", "id_cargo", "id_departamento"]]
+
     return df
 
 def transform_salarios(**kwargs):
     salarios = kwargs["ti"].xcom_pull(task_ids = "extract_salarios")
     df = pandas.read_json(salarios, orient = "records")
+    df = df.where(pandas.notnull(df), None)
 
     df["valor"] = pandas.to_numeric(df["valor"], errors = "coerce")
     df["valor"] = df["valor"] + 500
+
+    df["data_fim"] = None
 
     return df
