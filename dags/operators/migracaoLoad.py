@@ -2,7 +2,6 @@ from airflow.providers.mysql.hooks.mysql import MySqlHook
 
 def load_departamentos(**kwargs):
     departamentos = kwargs["ti"].xcom_pull(task_ids = "transform_departamentos")
-    table_name = "departamentos"
 
     mysql_hook = MySqlHook(
         mysql_conn_id = "load_mysql",
